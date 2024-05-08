@@ -1,24 +1,45 @@
 <div class="p-6 bg-gray-100 relative rounded shadow">
-  <button (click)="close()" type="button" class="absolute top-3 right-3 focus:outline-none p-2">
+  <button
+    (click)="close()"
+    type="button"
+    class="absolute top-3 right-3 focus:outline-none p-2"
+  >
     <fa-icon [icon]="faClose"></fa-icon>
   </button>
-  <div class="flex space-x-2 mb-5">
+  <div class="flex items-center space-x-4 mb-5">
     <fa-icon class="text-gray-800" [icon]="faCheckToSlot"></fa-icon>
     <div class="flex flex-col">
-      <h3 class="text-lg font-semibold text-gray-800">{{ todo.title }}</h3>
-      <p class="text-sm text-gray-500">in list ToDo</p>
+      <h3
+        class="text-lg font-semibold text-gray-800"
+        *ngIf="!openInputCard"
+        (dblclick)="openInputCard = !openInputCard"
+      >
+        {{ card$.getValue().title }}
+      </h3>
+      <div *ngIf="openInputCard" class="flex gap-2">
+        <input
+          class="px-2 py-1 rounded-md border border-gray-400 text-black"
+          [formControl]="inputCard"
+        />
+        <app-btn
+          typeBtn="submit"
+          [color]="'light'"
+          (click)="updateCardTitle(card$.getValue().id)"
+        >
+          <fa-icon [icon]="faFloppyDisk"></fa-icon>
+        </app-btn>
+      </div>
+      <p class="text-sm mt-2 text-gray-500">in list ToDo</p>
     </div>
   </div>
   <div class="flex w-full gap-4">
-    <div class="flex space-x-2 mb-5 w-4/6">
+    <div class="flex space-x-4 mb-5 w-4/6">
       <fa-icon class="text-gray-800" [icon]="faBars"></fa-icon>
-      <div class="flex flex-col">
+      <div class="flex flex-col gap-2">
         <h3 class="text-lg font-semibold text-gray-800">Description</h3>
-        <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis, hic? Adipisci soluta cum odio, beatae ratione magni nobis, optio similique rerum minus excepturi sed vel, id voluptatibus repellendus numquam quod.</p>
-        <div class="flex space-x-2">
-          <button type="button" (click)="closeWithRta(true)">Si</button>
-          <button type="button" (click)="closeWithRta(false)">No</button>
-        </div>
+        <p class="text-sm text-gray-500">
+          {{ card$.getValue().description }}
+        </p>
       </div>
     </div>
     <div class="flex flex-auto space-y-2 flex-col">
